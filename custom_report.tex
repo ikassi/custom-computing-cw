@@ -33,5 +33,32 @@ $\Rightarrow N_{units} > 10^6$
 
 \section*{Question 2}
 \section*{Question 3}
+In order to show that $[P,Q]^{n};R = R;Q^n$ for $n>0$, we first have to show that it is $True$ for n = 1.
+\\[0.5cm]
+Base case: $[P,Q]^{1};R=R;Q^1$
+\\[0.5cm]
+This is intuitively shown to be true by the given assumption $[P,Q]^{n};R$ which is equivalent.
+\\[0.5cm]
+Assuming that it is also true for  $n = k > 0$ 
+\\[0.5cm]
+$[P,Q]^{k};R = R;Q^k$
+\\[0.5cm]
+We need to show that the same is true for $n = k+1$ 
+\\[0.5cm]
+$[P,Q]^{k+1};R $
+\\[0.25cm]
+$= [P,Q]^k;[P,Q];R$
+\\[0.25cm]
+$= [P,Q]^k;R;Q$
+\\[0.25cm]
+$= R;Q^k;Q$
+\\[0.25cm]
+$= R;Q^{k+1}$
+\\[0.5cm]
+So by induction we have proved that if we know $[P,Q];R = R;Q$ to be $True$, for $n>0$:
+\\[0.5cm]
+$[P,Q]^{n};R = R;Q^n$
+is also $True$
+
 \section*{Question 4}
 \end{document}
