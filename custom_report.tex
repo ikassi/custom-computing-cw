@@ -4,7 +4,9 @@
 \usepackage[utf8]{inputenc}
 \usepackage[margin=1in]{geometry}
 \usepackage{tikz}
-
+\usepackage{alltt}
+\usepackage{fancyvrb}
+\newcommand{\mytilde}{$\sim$}
 
 \pdfinfo{%
   /Title    (Custom Computing: Assessed Coursework)
@@ -35,24 +37,87 @@ $\Rightarrow \pounds 2 \times N_{units} > \pounds 10^6 + \pounds 1 \times N_{uni
 $\Rightarrow N_{units} > 10^6$
 
 \section*{Question 2}
-\subsection*{(a) Symbolic Simulation}
-\subsubsection*{Q1}
+\subsection*{(a) Diagramatic and symbolic Simulation}
+\subsubsection*{Diagram of circuit Q1}
 \begin{figure}[!h]
 \begin{center}
 \input{Q1.tex}
-\caption{the circuit derrived for Q1}
+\caption{the circuit as derrived from Q1}
 \end{center}
 \end{figure}
-\subsubsection*{P1}
+\subsubsection*{Diagram of circuit P1}
 \begin{figure}[!h]
 \begin{center}
 \input{P1Q1.tex}
-\caption{the circuit derrived for P1}
+\caption{the circuit as derrived from P1}
 \end{center}
 \end{figure}
+\subsubsection*{Simulation}
+The source code of the simulation (uninitialized delay) is the following:
+\begin{Verbatim}[commandchars=\\\{\}]
+INCLUDE "prelude.rby".
+P1 n = Q1^n; fork^\mytilde1 .
+Q1 = snd fork; rsh; [add,D^\mytilde1].
+current = P1 4.
+\end{Verbatim}
+The circuit representation:
+\begin{Verbatim}[commandchars=\\\{\}]
+   Name           Domain             Range
+   ----------------------------------------
+   D ?            .1                 .2
+   D ?            .3                 .1
+   D ?            .4                 .3
+   D ?            .5                 .4
+   ----------------------------------------
+   add            <.6,.2>            .7
+   ----------------------------------------
+   add            <.7,.1>            .8
+   ----------------------------------------
+   add            <.8,.3>            .9
+   ----------------------------------------
+   add            <.9,.4>            .5
+   ----------------------------------------
 
+ Directions -  <in,out> \mytilde out
 
+ Wiring -  <.6,.2> \mytilde .5
 
+ Inputs -  .6
+\end{Verbatim}
+
+The source code of the simulation (initialized delay with 0) is the following:
+\begin{Verbatim}[commandchars=\\\{\}]
+INCLUDE "prelude.rby".
+P1 n = Q1^n; fork^\mytilde1 .
+Q1 = snd fork; rsh; [add,DI 0^\mytilde1].
+current = P1 4.
+\end{Verbatim}
+The circuit representation:
+\begin{Verbatim}
+    Name           Domain             Range
+   ----------------------------------------
+   D 0            .1                 .2
+   D 0            .3                 .1
+   D 0            .4                 .3
+   D 0            .5                 .4
+   ----------------------------------------
+   add            <.6,.2>            .7
+   ----------------------------------------
+   add            <.7,.1>            .8
+   ----------------------------------------
+   add            <.8,.3>            .9
+   ----------------------------------------
+   add            <.9,.4>            .5
+   ----------------------------------------
+
+ Directions -  <in,out> ~ out
+
+ Wiring -  <.6,.2> ~ .5
+
+ Inputs -  .6
+
+\end{Verbatim}
+The simulation output (for 4 cycles) can be found in the included zip file.
 \section*{Question 3}
 \subsection*{(a) Proof by induction}
 In order to show that $[P,Q]^{n};R = R;Q^n$ for $n>0$, we first have to show that it is $True$ for n = 1.

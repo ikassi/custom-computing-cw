@@ -1,0 +1,4 @@
+INCLUDE "prelude.rby".
+P1 n = Q1^n; fork^~1 .
+Q1 = snd fork; rsh; [add,D^~1].
+current = P1 4.
