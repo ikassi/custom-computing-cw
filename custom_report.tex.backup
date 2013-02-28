@@ -3,8 +3,9 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage[margin=1in]{geometry}
-\usepackage{tikz}
 
+\usepackage{tikz}
+\usepackage[symbols]{circuitikz}
 
 \pdfinfo{%
   /Title    (Custom Computing: Assessed Coursework)
@@ -21,8 +22,7 @@
 \date{\today}
 \maketitle
 \section*{Question 1}
-\textbf{Recurring engin
-eering costs} are the costs that will occur in a repeating fashion during the production, usually involving fabriction.
+\textbf{Recurring engineering costs} are the costs that will occur in a repeating fashion during the production, usually involving fabriction.
 These costs are usually descriped in a per unit form.
 \\[0.25cm]
 \textbf{Non-recurring engineering cost} is the one-time up-front cost 
@@ -35,23 +35,7 @@ $\Rightarrow \pounds 2 \times N_{units} > \pounds 10^6 + \pounds 1 \times N_{uni
 $\Rightarrow N_{units} > 10^6$
 
 \section*{Question 2}
-\subsection*{(a) Symbolic Simulation}
-\subsubsection*{Q1}
-\begin{figure}[!h]
-\begin{center}
-\input{Q1.tex}
-\caption{the circuit derrived for Q1}
-\end{center}
-\end{figure}
-\subsubsection*{P1}
-\begin{figure}[!h]
-\begin{center}
-\input{P1Q1.tex}
-\caption{the circuit derrived for P1}
-\end{center}
-\end{figure}
-
-
+\subsubsection*{(a) Symbolic Simulation}
 
 \section*{Question 3}
 \subsection*{(a) Proof by induction}
