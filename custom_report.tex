@@ -8,6 +8,8 @@
 \usepackage{fancyvrb}
 \newcommand{\mytilde}{$\sim$}
 
+
+\usepackage{float}
 \pdfinfo{%
   /Title    (Custom Computing: Assessed Coursework)
   /Author   (Ioannis Kassinopoulos)
@@ -60,31 +62,13 @@ P1 n = Q1^n; fork^\mytilde1 .
 Q1 = snd fork; rsh; [add,D^\mytilde1].
 current = P1 4.
 \end{Verbatim}
-The circuit representation:
+The result after executing \verb|re "a;b;c"|
 \begin{Verbatim}[commandchars=\\\{\}]
-   Name           Domain             Range
-   ----------------------------------------
-   D ?            .1                 .2
-   D ?            .3                 .1
-   D ?            .4                 .3
-   D ?            .5                 .4
-   ----------------------------------------
-   add            <.6,.2>            .7
-   ----------------------------------------
-   add            <.7,.1>            .8
-   ----------------------------------------
-   add            <.8,.3>            .9
-   ----------------------------------------
-   add            <.9,.4>            .5
-   ----------------------------------------
-
- Directions -  <in,out> \mytilde out
-
- Wiring -  <.6,.2> \mytilde .5
-
- Inputs -  .6
+0 - <a,?> ~ ((((a + ?) + ?) + ?) + ?)
+1 - <b,?> ~ ((((b + ?) + ?) + ?) + ((((a + ?) + ?) + ?) + ?))
+2 - <c,?> ~ ((((c + ?) + ?) + ((((a + ?) + ?) + ?) + ?)) + ((((b + ?) + ?) + ?) 
+	  + ((((a + ?) + ?) + ?) + ?)))
 \end{Verbatim}
-
 The source code of the simulation (initialized delay with 0) is the following:
 \begin{Verbatim}[commandchars=\\\{\}]
 INCLUDE "prelude.rby".
@@ -92,60 +76,97 @@ P1 n = Q1^n; fork^\mytilde1 .
 Q1 = snd fork; rsh; [add,DI 0^\mytilde1].
 current = P1 4.
 \end{Verbatim}
-The circuit representation:
-\begin{Verbatim}
-    Name           Domain             Range
-   ----------------------------------------
-   D 0            .1                 .2
-   D 0            .3                 .1
-   D 0            .4                 .3
-   D 0            .5                 .4
-   ----------------------------------------
-   add            <.6,.2>            .7
-   ----------------------------------------
-   add            <.7,.1>            .8
-   ----------------------------------------
-   add            <.8,.3>            .9
-   ----------------------------------------
-   add            <.9,.4>            .5
-   ----------------------------------------
-
- Directions -  <in,out> ~ out
-
- Wiring -  <.6,.2> ~ .5
-
- Inputs -  .6
-
+The result after executing \verb|re "a;b;c"|
+\begin{Verbatim}[commandchars=\\\{\}]
+0 - <a,0> ~ ((((a + 0) + 0) + 0) + 0)
+1 - <b,0> ~ ((((b + 0) + 0) + 0) + ((((a + 0) + 0) + 0) + 0))
+2 - <c,0> ~ ((((c + 0) + 0) + ((((a + 0) + 0) + 0) + 0)) + ((
+	    ((b + 0) + 0) + 0) + ((((a + 0) + 0) + 0) + 0)))
+\end{Verbatim}
+The result after executing \verb|re -s 4 1"|
+\begin{Verbatim}[commandchars=\\\{\}]
+0 - <1,0> ~ 1
+1 - <1,0> ~ 2
+2 - <1,0> ~ 4
+3 - <1,0> ~ 8
 \end{Verbatim}
 The simulation output (for 4 cycles) can be found in the included zip file.
 \section*{Question 3}
 \subsection*{(a) Proof by induction}
 In order to show that $[P,Q]^{n};R = R;Q^n$ for $n>0$, we first have to show that it is $True$ for n = 1.
 \\[0.5cm]
-Base case: $[P,Q]^{1};R=R;Q^1$
+\textbf{Base case:} $[P,Q]^{1};R=R;Q^1$
 \\[0.5cm]
-This is intuitively shown to be true by the given assumption $[P,Q]^{n};R$ which is equivalent.
+This is intuitively shown to be true by the given assumption $[P,Q]^{n};R=R;Q$ which is equivalent.
 \\[0.5cm]
 Assuming that it is also true for  $n = k > 0$ 
 \\[0.5cm]
-$[P,Q]^{k};R = R;Q^k$
+\textbf{Inductive Hypothesis:} $[P,Q]^{k};R = R;Q^k$
 \\[0.5cm]
-We need to show that the same is true for $n = k+1$ 
+We need to show that the same is true for $n = k+1$ and $[P,Q]^{k+1};R = R;Q^{k+1}$
 \\[0.5cm]
-$[P,Q]^{k+1};R $
+ $[P,Q]^{k+1};R $ \textbf{LHS}
 \\[0.25cm]
-$= [P,Q]^k;[P,Q];R$
+$= [P,Q]^k;[P,Q];R$ (by sequential expansion of $[P,Q]^{k+1}$)
 \\[0.25cm]
-$= [P,Q]^k;R;Q$
+$= [P,Q]^k;R;Q$ (since $[P,Q];R = R;Q$ given)
 \\[0.25cm]
-$= R;Q^k;Q$
+$= R;Q^k;Q$ (by the i.h. $[P,Q]^{k};R = R;Q^k$)
 \\[0.25cm]
-$= R;Q^{k+1}$
+$= R;Q^{k+1}$ (by sequential contraction of $Q^{k};Q$)  \textbf{RHS}
 \\[0.5cm]
-So by induction we have proved that if we know $[P,Q];R = R;Q$ to be $True$, for $n>0$:
+So by induction we have \textbf{proved} that if $[P,Q];R = R;Q$ is given to be $True$, for $n>0$:
 \\[0.5cm]
-$[P,Q]^{n};R = R;Q^n$
+$[P,Q]^{n};R = R;Q^n$ 
 is also $True$
+\subsection*{(b) Inductive Definitions}
+\subsubsection*{Right-reduction}
+$rdr_1 = fst\:  [-]^{-1};R.$ \\[0.25cm]
+$rdr_{n+1} = fst\:  apl_{n}^{-1};lsh;snd(rdr_n\: R);R.$
+\subsubsection*{Delta (triangle)}
+$\Delta_0 = [\: ].$ \\[0.25cm]
+$\Delta_{n+1} = [\Delta_{n},R^n]\backslash apr_n.$
+\subsection*{(c) Horner's Rule}
+\subsubsection*{Left-hand side}
+\begin{figure}[H]
+\begin{center}
+\input{hor1.tex}
+\caption{LHS of the rule for n = 3}
+\end{center}
+\end{figure}
+\subsubsection*{Right-hand side}
+\begin{figure}[H]
+\begin{center}
+\input{hor2.tex}
+\caption{RHS of the rule for n = 3}
+\end{center}
+\end{figure}
+\subsection*{(d) Polynomial Evaluation}
+R stands for the add operation (addition), P and Q both stand for multiplication by a constant (let this constant be x).
+For the given coefficients $a_0,a_1,a_2,a_3$, the circuit will be the following.
+\begin{figure}[H]
+\begin{center}
+\input{hormult.tex}
+\caption{The optimised circuit as adjusted for polynomial evaluation}
+\end{center}
+\end{figure}
+and the simulation written in Ruby:
+\begin{Verbatim}
+INCLUDE "prelude.rby".
+multc n = pi1^~1;snd n;mult.
+Q = multc 'x'.
+R = add.
+POL n = rdr n (snd Q; R).
+current = POL 3.
+\end{Verbatim}
+run with \verb|re "a_0 a_1 a_2 a_3"| produces the following output:
+\begin{Verbatim}
+Simulation start :
 
+    0 - <<a_0,a_1,a_2>,a_3> ~ (a_0 + ((a_1 + ((a_2 + (a_3 * x)) * x)) * x))
+
+Simulation end :
+\end{Verbatim}
 \section*{Question 4}
+
 \end{document}
