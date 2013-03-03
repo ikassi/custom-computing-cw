@@ -25,8 +25,7 @@
 \date{\today}
 \maketitle
 \section*{Question 1}
-\textbf{Recurring engin
-eering costs} are the costs that will occur in a repeating fashion during the production, usually involving fabriction.
+\textbf{Recurring engineering costs} are the costs that will occur in a repeating fashion during the production, usually involving fabriction.
 These costs are usually descriped in a per unit form.
 \\[0.25cm]
 \textbf{Non-recurring engineering cost} is the one-time up-front cost 
@@ -35,7 +34,7 @@ for research, design, testing and development of a new product.
 As we can see below, the minimum number of units that need to be sold for the ASIC implementation to be cost-effective is 1 million units.
 \\[0.25cm]
 $C_{FPGA} > C_{ASIC}$
-$\Rightarrow \pounds 2 \times N_{units} > \pounds 10^6 + \pounds 1 \times N_{units} $ 
+$\Rightarrow \pounds 0 + \pounds 2 \times N_{units} > \pounds 10^6 + \pounds 1 \times N_{units} $ 
 $\Rightarrow N_{units} > 10^6$
 
 \section*{Question 2}
@@ -178,23 +177,22 @@ $<<<X,X>,<X,X>>,<<X,X>,<X,X>>>\:  \sim \: X.$
 \subsection*{(b) Fully pipelined timeless implementation of btree for timeless R}
 \subsubsection*{Definition}
 The system can be described by the following inductive equation: \\[0.25cm]
-$btree_1 = R.$ \\[0.25cm]
-$btree_{n+1} = [btree_{n} R , btree_{n} R]; (R\backslash D^{-1}).$
+$pbtree_1 = R.$ \\[0.25cm]
+$pbtree_{n+1} = [pbtree_n R,pbtree_n R];[D^n,D^n];R;AD^n.$
 \subsubsection*{Proof by induction}
-Here, we will try and prove that this equation is equivalent to the given. For readability we will
-call the pipelined implementation p\_btree \\[0.5cm]
-\textbf{Base Case:}  $p\_btree_1 = btree_1$ (required to show)\\[0.25cm]
-$p\_btree_1$ \textbf{LHS} \\[0.25cm]
-$=R$  (by definition of $btree$) \\[0.25cm]
-$=p\_btree_1 $ (by definition of $p\_btree$) \textbf{RHS}
+Here, we will try and prove that our equation is equivalent to the given.\\[0.5cm]
+\textbf{Base Case:}  $pbtree_1 = btree_1$ (required to show)\\[0.25cm]
+$pbtree_1$ \textbf{LHS} \\[0.25cm]
+$=R$  (by definition of $pbtree$) \\[0.25cm]
+$=btree_1 $ (by definition of $btree$) \textbf{RHS}
 \\[0.5cm]
-\textbf{Inductive Hypothesis:} $p\_btree_n R = btree_n R.$ \\[0.25cm]	
-We need to show that: $p\_btree_{n+1} = btree_{n+1}.$ \\[0.25cm]
-$p\_btree_{n+1}$ \textbf{LHS} \\[0.25cm]
-$= [p\_btree_{n} R, p\_btree_{n} R]; (R\backslash D^{-1}).$ (by our definition of p\_btree) \\[0.25cm] 
-$= [btree_{n} R, btree_{n} R]; (R\backslash D^{-1}).$ (by the inductive hypothesis) \\[0.25cm] 
-$= [btree_{n} R, btree_{n} R];R.$ (by $\backslash D^{-1}$ elimination since R is timeless) \\[0.25cm]
-$= btree_{n+1} R $ (by the definition of btree) \textbf{RHS}
+\textbf{Inductive Hypothesis:} $pbtree_k = btree_k $ \\[0.25cm]
+We need to show that: $pbtree_{k+1} = btree_{k+1}.$ \\[0.25cm]
+$pbtree_{k+1}$ \textbf{LHS} \\[0.25cm]
+$=[pbtree_k R,pbtree_k R];[D^k,D^k];R;AD^k.$ (by the pbtree definition)\\[0.25cm]
+$=[btree_k R,btree_k R];[D^k,D^k];R;AD^k.$ (replacing $pbtree_k$ with $btree_k$ by the hypothesis)\\[0.25cm]
+$=[btree_k R,btree_k R];R.$ (replacing $[D^k,D^k];R;AD^k$ with R since R is timeless and they cancel out.)\\[0.25cm]
+$=btree_{k+1}.$ (definition of btree) \textbf{RHS}
 \subsubsection*{Symbolic simulation of a binary adder}
 \begin{Verbatim}
 INCLUDE "prelude.rby".

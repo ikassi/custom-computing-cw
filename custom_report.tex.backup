@@ -178,9 +178,13 @@ $<<<X,X>,<X,X>>,<<X,X>,<X,X>>>\:  \sim \: X.$
 \subsection*{(b) Fully pipelined timeless implementation of btree for timeless R}
 \subsubsection*{Definition}
 The system can be described by the following inductive equation: \\[0.25cm]
-$btree_1 = R.$ \\[0.25cm]
-$btree_{n+1} = [btree_{n} R , btree_{n} R]; (R\backslash D^{-1}).$
+$pbtree_1 = R.$ \\[0.25cm]
+$pbtree_{n+1} = [pbtree_n R,pbtree_n R];[D^n,D^n];R;AD^n.$
 \subsubsection*{Proof by induction}
+
+
+TRYING.
+\\[10cm]
 Here, we will try and prove that this equation is equivalent to the given. For readability we will
 call the pipelined implementation p\_btree \\[0.5cm]
 \textbf{Base Case:}  $p\_btree_1 = btree_1$ (required to show)\\[0.25cm]
@@ -188,7 +192,12 @@ $p\_btree_1$ \textbf{LHS} \\[0.25cm]
 $=R$  (by definition of $btree$) \\[0.25cm]
 $=p\_btree_1 $ (by definition of $p\_btree$) \textbf{RHS}
 \\[0.5cm]
-\textbf{Inductive Hypothesis:} $p\_btree_n R = btree_n R.$ \\[0.25cm]	
+\textbf{Inductive Hypothesis:} $[pbtree_{k-1} R,pbtree_{k-1} R];[D^{k-1},D^{k-1}];R;AD^{k-1} = btree_k R$ \\[0.25cm]	
+$[pbtree_k R,pbtree_k R];[D^k,D^k];R;AD^k$ \\[0.25cm]
+$[(pbtree_k R;D^k),(pbtree_k R;D^k)];R;AD^k$ \\[0.25cm]
+$pbtree_k R;D^k $ \\[0.25cm]
+$= [pbtree_{k-1} R,pbtree_{k-1} R];[D^{k-1},D^{k-1}];R;AD^{k-1};D^k$\\[0.25cm]
+$= [pbtree_{k-1} R,pbtree_{k-1} R];[D^{k-1},D^{k-1}];R;D$\\[2.25cm]
 We need to show that: $p\_btree_{n+1} = btree_{n+1}.$ \\[0.25cm]
 $p\_btree_{n+1}$ \textbf{LHS} \\[0.25cm]
 $= [p\_btree_{n} R, p\_btree_{n} R]; (R\backslash D^{-1}).$ (by our definition of p\_btree) \\[0.25cm] 
@@ -218,9 +227,5 @@ Simulation end :
 
 \subsection*{(c) Change of type}
 In order to translate our implementation in a new one that expects a flat list of $n^2$ elements instead of nested sublists of tuples
-we need to be able to break the flat list into $(n-1)^2$ tuples which themselves are nested in the same manner for n levels.
-R expects two inputs, <X, X>. Hence in the recursive definition of btree2 expects <<X, X>, <X, X>> and we build up
-pairs of pairs of pairs (and so on) of Xs. Thus if we were to supply a single flat list of Xs, we would have to split
-that list into pairs each time. Thus we need to precede the definition with a halfm where m = 2n. Thus our revised
-inductive definition of btreen is btreen = halfm; [btreen-1, btreen-1];R. The base case definition remains the same.
-\end{document}
+we need to be able to break the flat list into $(n-1)^2$ tuples which themselves are nested in the same manner for n levels. To do this, we have to assume that
+$btree_n$ for $n=2$ will be able to handle an <X,X,X,X> input and translate it into.\end{document}
