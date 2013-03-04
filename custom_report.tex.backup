@@ -94,7 +94,54 @@ The simulation output (for 4 cycles) can be found in the included zip file.
 We first add D registers between the Q1 series and $fork^{-1}$ which give us: $P2=Q1^n;[D,D]^n;fork^{-1}$\\[0.25cm] 
 Using the transformation: $P2=(Q1;[D,D])^n;fork^{-1}$ since $Q1;[D,D]$ is equivalent to $[D,D];Q1$.\\[0.25cm] 
 Now we can consider Q2 to be equal to $Q1;[D,D]$ and therefore $P2 = Q2^n;fork^{-1}$ is our definition as stated by the question.\\[0.25cm] 
-Going deeper into the definition, we now need to check if this means that D registers have been added betwwen the adders. \\[0.25cm] 
+Going deeper into the definition, we now need to check if this means that D registers have been added between the adders. \\[0.25cm] 
+$Q2 = Q1;[D,D] $\\[0.25cm]
+$\Rightarrow Q2 = snd\: fork;rsh;[add,D^{-1}];[D,D]$ \\[0.25cm]
+$\Rightarrow Q2 = snd\: fork;rsh;[(add;D),(D^{-1};D)] $ \\[0.25cm]
+$\Rightarrow Q2 = snd\: fork;rsh;[(add;D),id] = snd\: fork;rsh;fst(add;D)$
+\\[0.5cm]
+The new circuit can be seen below:
+\begin{figure}[H]
+\begin{center}
+\input{q2.tex}
+\caption{The circuit after using the transformation to add the registers between the adders}
+\end{center}
+\end{figure}
+The source code for the circuit is the following:
+\begin{Verbatim}
+INCLUDE "prelude.rby".
+Q2 = snd fork;rsh;fst (add; D).
+P2 n = Q2^n; fork^~1. 
+current = P2 4.
+\end{Verbatim}
+The result can be seen below (for uninitialized delay)
+\begin{Verbatim}
+re "a;b;c"
+Simulation start :
+
+    0 - <a,?> ~ ?
+    1 - <b,(? + ?)> ~ (? + ?)
+    2 - <c,((? + ?) + (? + ?))> ~ ((? + ?) + (? + ?))
+
+Simulation end :
+\end{Verbatim}
+
+\subsection*{(c) Slowdown}
+Slowdown means doubling the registers of the design which trivially translates into combining the designs of Q1 and Q2 into a new design Q3 which has the registers of both.
+This can be done by extending Q2 from $snd fork;rsh;fst (add; D)$ or $snd fork;rsh;[(add; D),id]$ to $snd fork;rsh;[(add; D),D^-1]$.
+The new circuit is the following:\\[0.5cm]
+\begin{figure}[H]
+\begin{center}
+\input{p3.tex}
+\caption{The circuit after slowdown}
+\end{center}
+\end{figure}
+\begin{Verbatim}
+ INCLUDE "prelude.rby".
+Q3 = snd fork;rsh;[(add; D),D^~1].
+P3 n = Q3^n; fork^~1. 
+current = P3 4.
+\end{Verbatim}
 
 \section*{Question 3}
 \subsection*{(a) Proof by induction}
