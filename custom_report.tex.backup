@@ -25,8 +25,7 @@
 \date{\today}
 \maketitle
 \section*{Question 1}
-\textbf{Recurring engin
-eering costs} are the costs that will occur in a repeating fashion during the production, usually involving fabriction.
+\textbf{Recurring engineering costs} are the costs that will occur in a repeating fashion during the production, usually involving fabriction.
 These costs are usually descriped in a per unit form.
 \\[0.25cm]
 \textbf{Non-recurring engineering cost} is the one-time up-front cost 
@@ -35,7 +34,7 @@ for research, design, testing and development of a new product.
 As we can see below, the minimum number of units that need to be sold for the ASIC implementation to be cost-effective is 1 million units.
 \\[0.25cm]
 $C_{FPGA} > C_{ASIC}$
-$\Rightarrow \pounds 2 \times N_{units} > \pounds 10^6 + \pounds 1 \times N_{units} $ 
+$\Rightarrow \pounds 0 + \pounds 2 \times N_{units} > \pounds 10^6 + \pounds 1 \times N_{units} $ 
 $\Rightarrow N_{units} > 10^6$
 
 \section*{Question 2}
@@ -91,6 +90,12 @@ The result after executing \verb|re -s 4 1"|
 3 - <1,0> ~ 8
 \end{Verbatim}
 The simulation output (for 4 cycles) can be found in the included zip file.
+\subsection*{(b) Use of the transformation}
+We first add D registers between the Q1 series and $fork^{-1}$ which give us: $P2=Q1^n;[D,D]^n;fork^{-1}$\\[0.25cm] 
+Using the transformation: $P2=(Q1;[D,D])^n;fork^{-1}$ since $Q1;[D,D]$ is equivalent to $[D,D];Q1$.\\[0.25cm] 
+Now we can consider Q2 to be equal to $Q1;[D,D]$ and therefore $P2 = Q2^n;fork^{-1}$ is our definition as stated by the question.\\[0.25cm] 
+Going deeper into the definition, we now need to check if this means that D registers have been added betwwen the adders. \\[0.25cm] 
+
 \section*{Question 3}
 \subsection*{(a) Proof by induction}
 In order to show that $[P,Q]^{n};R = R;Q^n$ for $n>0$, we first have to show that it is $True$ for n = 1.
@@ -181,29 +186,19 @@ The system can be described by the following inductive equation: \\[0.25cm]
 $pbtree_1 = R.$ \\[0.25cm]
 $pbtree_{n+1} = [pbtree_n R,pbtree_n R];[D^n,D^n];R;AD^n.$
 \subsubsection*{Proof by induction}
-
-
-TRYING.
-\\[10cm]
-Here, we will try and prove that this equation is equivalent to the given. For readability we will
-call the pipelined implementation p\_btree \\[0.5cm]
-\textbf{Base Case:}  $p\_btree_1 = btree_1$ (required to show)\\[0.25cm]
-$p\_btree_1$ \textbf{LHS} \\[0.25cm]
-$=R$  (by definition of $btree$) \\[0.25cm]
-$=p\_btree_1 $ (by definition of $p\_btree$) \textbf{RHS}
+Here, we will try and prove that our equation is equivalent to the given.\\[0.5cm]
+\textbf{Base Case:}  $pbtree_1 = btree_1$ (required to show)\\[0.25cm]
+$pbtree_1$ \textbf{LHS} \\[0.25cm]
+$=R$  (by definition of $pbtree$) \\[0.25cm]
+$=btree_1 $ (by definition of $btree$) \textbf{RHS}
 \\[0.5cm]
-\textbf{Inductive Hypothesis:} $[pbtree_{k-1} R,pbtree_{k-1} R];[D^{k-1},D^{k-1}];R;AD^{k-1} = btree_k R$ \\[0.25cm]	
-$[pbtree_k R,pbtree_k R];[D^k,D^k];R;AD^k$ \\[0.25cm]
-$[(pbtree_k R;D^k),(pbtree_k R;D^k)];R;AD^k$ \\[0.25cm]
-$pbtree_k R;D^k $ \\[0.25cm]
-$= [pbtree_{k-1} R,pbtree_{k-1} R];[D^{k-1},D^{k-1}];R;AD^{k-1};D^k$\\[0.25cm]
-$= [pbtree_{k-1} R,pbtree_{k-1} R];[D^{k-1},D^{k-1}];R;D$\\[2.25cm]
-We need to show that: $p\_btree_{n+1} = btree_{n+1}.$ \\[0.25cm]
-$p\_btree_{n+1}$ \textbf{LHS} \\[0.25cm]
-$= [p\_btree_{n} R, p\_btree_{n} R]; (R\backslash D^{-1}).$ (by our definition of p\_btree) \\[0.25cm] 
-$= [btree_{n} R, btree_{n} R]; (R\backslash D^{-1}).$ (by the inductive hypothesis) \\[0.25cm] 
-$= [btree_{n} R, btree_{n} R];R.$ (by $\backslash D^{-1}$ elimination since R is timeless) \\[0.25cm]
-$= btree_{n+1} R $ (by the definition of btree) \textbf{RHS}
+\textbf{Inductive Hypothesis:} $pbtree_k = btree_k $ \\[0.25cm]
+We need to show that: $pbtree_{k+1} = btree_{k+1}.$ \\[0.25cm]
+$pbtree_{k+1}$ \textbf{LHS} \\[0.25cm]
+$=[pbtree_k R,pbtree_k R];[D^k,D^k];R;AD^k.$ (by the pbtree definition)\\[0.25cm]
+$=[btree_k R,btree_k R];[D^k,D^k];R;AD^k.$ (replacing $pbtree_k$ with $btree_k$ by the hypothesis)\\[0.25cm]
+$=[btree_k R,btree_k R];R.$ (replacing $[D^k,D^k];R;AD^k$ with R since R is timeless and they cancel out.)\\[0.25cm]
+$=btree_{k+1}.$ (definition of btree) \textbf{RHS}
 \subsubsection*{Symbolic simulation of a binary adder}
 \begin{Verbatim}
 INCLUDE "prelude.rby".
@@ -226,6 +221,42 @@ Simulation end :
 \end{Verbatim}
 
 \subsection*{(c) Change of type}
-In order to translate our implementation in a new one that expects a flat list of $n^2$ elements instead of nested sublists of tuples
-we need to be able to break the flat list into $(n-1)^2$ tuples which themselves are nested in the same manner for n levels. To do this, we have to assume that
-$btree_n$ for $n=2$ will be able to handle an <X,X,X,X> input and translate it into.\end{document}
+In order to understand the changes that need to occur in our definition let's consider $btree_3$. \\[0.5cm]
+The transformation we wish to achieve is the following: \\[0.25cm]
+$<X,X,X,X,X,X,X,X> \Rightarrow <<<X,X>,<X,X>>,<<X,X>,<X,X>>>$. \\[0.25cm]
+which is equivallent to applying to the initial flat list the prelude function $half_4$ or $half_{2^(3-1)}$, and then to each half $half_2$. \\[0.25cm]
+The obvious pattern is easily implementable in Ruby due to the functional nature of the language. The inductive definition of the equation is the following:
+\\[0.5cm]
+$btree_1 R = R$ \\[0.25cm]
+$btree_n R = half_{2^{n-1}};[btree_{n-1} R, btree_{n-1} R];R.$ \\[0.25cm]
+The source code of the implementation:
+\begin{Verbatim}
+INCLUDE "prelude.rby".
+btree n R =
+	IF (n $eq 1) THEN
+		(R)
+	ELSE
+		(half (2 $exp (n-1));[btree (n-1) R, btree (n-1) R];R).
+current = btree 3 add.
+\end{Verbatim}
+The result (sum 1 - 8):
+\begin{Verbatim}
+re 1 2 3 4 5 6 7 8
+Simulation start :
+
+    0 - <1,2,3,4,5,6,7,8> ~ 36
+
+Simulation end :
+\end{Verbatim}
+The result (symbolic simulation):
+\begin{Verbatim}
+re a b c d p q r s
+Simulation start :
+
+    0 - <a,b,c,d,p,q,r,s> ~ (((a + b) + (c + d)) + ((p + q) + (r + s)))
+
+Simulation end :
+\end{Verbatim}
+
+
+\end{document}
