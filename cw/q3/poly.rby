@@ -1,0 +1,6 @@
+INCLUDE "prelude.rby".
+multc n = pi1^~1;snd n;mult.
+Q = multc 'x'.
+R = add.
+POL n = rdr n (snd Q; R).
+current = POL 3.

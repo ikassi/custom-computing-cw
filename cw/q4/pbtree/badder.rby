@@ -1,0 +1,7 @@
+INCLUDE "prelude.rby".
+btree n R = 
+	IF (n $eq 1) THEN
+		(R) 
+	ELSE 
+		([btree (n-1) R, btree (n-1) R];[D^(n-1),D^(n-1)]; add ; (AD^(n-1))).
+current = btree 3 add.
